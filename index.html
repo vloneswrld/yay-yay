@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Ameer Awards 🏆</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to bottom, #a7d3f2, #fcd1f8);
+      overflow-x: hidden;
+    }
+
+    .floating {
+      position: fixed;
+      animation: float 15s linear infinite;
+      opacity: 0.7;
+      font-size: 2rem;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) translateX(50vw); opacity: 0; }
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 40px;
+      text-align: center;
+      z-index: 1;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #ff69b4;
+      text-shadow: 1px 1px white;
+    }
+
+    .award {
+      background: white;
+      padding: 25px;
+      margin: 30px 0;
+      border-radius: 25px;
+      box-shadow: 0 0 20px rgba(255, 192, 203, 0.6);
+      animation: pop 0.5s ease forwards;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .award-title {
+      font-size: 1.8rem;
+      color: #f06292;
+    }
+
+    .emoji {
+      font-size: 2.5rem;
+      animation: wiggle 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes wiggle {
+      from { transform: rotate(-5deg); }
+      to { transform: rotate(5deg); }
+    }
+
+    .message {
+      font-size: 1.1rem;
+      margin-top: 15px;
+      color: #555;
+    }
+
+    .final {
+      font-size: 1.5rem;
+      margin-top: 50px;
+      color: #e91e63;
+      background: #fff0f5;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    #start-screen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #fff0fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      text-align: center;
+    }
+
+    #start-screen h1 {
+      font-size: 3rem;
+      color: #d63384;
+    }
+
+    #start-btn {
+      padding: 15px 30px;
+      background: #ffb6c1;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+
+    #start-btn:hover {
+      background: #ff69b4;
+      color: white;
+    }
+
+    #main-content {
+      display: none;
+    }
+
+    .surprise-btn {
+      margin-top: 30px;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 20px;
+      background: #ff9de2;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .surprise-btn:hover {
+      background: #ec4899;
+    }
+
+    #confetti {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      display: none;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .popup {
+      background: #ffe4f2;
+      padding: 30px;
+      border-radius: 25px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      font-size: 1.1rem;
+      position: relative;
+    }
+
+    .popup h2 {
+      color: #e91e63;
+      font-size: 1.6rem;
+    }
+
+    .popup p {
+      color: #555;
+    }
+
+    .popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #e91e63;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating emojis -->
+  <div class="floating" style="left: 10%;">🧸</div>
+  <div class="floating" style="left: 30%;">🏎️</div>
+  <div class="floating" style="left: 50%;">✨</div>
+  <div class="floating" style="left: 70%;">❤️</div>
+  <div class="floating" style="left: 90%;">🧸</div>
+
+  <!-- Confetti emoji burst -->
+  <div id="confetti"></div>
+
+  <!-- Start screen -->
+  <div id="start-screen">
+    <h1>🎬 Welcome to the Ameer Awards 🏆</h1>
+    <p style="font-size: 1.2rem; color: #444;">A special celebration for the most perfect boy alive 💗</p>
+    <button id="start-btn">Start the Show ✨</button>
+  </div>
+
+  <!-- Love letter popup -->
+  <div class="popup-overlay" id="popup-overlay">
+    <div class="popup">
+      <button class="close-btn" onclick="document.getElementById('popup-overlay').style.display='none'">❌</button>
+      <h2>💌 One Last Award...</h2>
+      <p>✨ Hi babyy ✨<br><br>
+      You’ve already won every award, but I had to give you this too — my whole heart. ❤️<br><br>
+      You’re everything to me. I’m so proud of you, so thankful for you, and so in love with you. 🧸<br><br>
+      Happy birthday, my forever favorite. 💗<br><br>
+      – Yours, always. 💖</p>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div id="main-content">
+    <div class="container">
+      <h1>🎥 The Ameer Awards 2025 🏆</h1>
+
+      <div class="award">
+        <div class="award-title">🏆 Best Smile That Melts Me</div>
+        <div class="emoji">😁💖</div>
+        <div class="message">No one’s smile hits like yours. It’s literally illegal to look that good and not warn me first.</div>
+      </div>
+
+      <div class="award">
+        <div class="award-title">🏆 Most Iconic Roblox Gamer</div>
+        <div class="emoji">🎮👑</div>
+        <div class="message">Whether you’re building or trolling, you always carry the lobby AND my heart.</div>
+      </div>
+
+      <div class="award">
+        <div class="award-title">🏆 Cutest Sleepy Voice Ever</div>
+        <div class="emoji">😴💘</div>
+        <div class="message">That tired little “heyy babyy” at night? Instant butterflies. I swear you sound like a sleepy angel.</div>
+      </div>
+
+      <div class="award">
+        <div class="award-title">🏆 Top Emotional Support Boyfriend</div>
+        <div class="emoji">🤝🩷</div>
+        <div class="message">You always listen, always stay calm, always hold it down when I’m spiraling. My rock fr.</div>
+      </div>
+
+      <div class="award">
+        <div class="award-title">🏆 Number One Juice WRLD Fan</div>
+        <div class="emoji">🎤🖤</div>
+        <div class="message">Nobody reps Juice like you do. The lyrics live in your blood, and I love that.</div>
+      </div>
+
+      <div class="award">
+        <div class="award-title">🏆 Most Handsome Human Ever</div>
+        <div class="emoji">😍🔥</div>
+        <div class="message">It’s not even fair how good-looking you are. Like babe, save some sexy for the rest of the world.</div>
+      </div>
+
+      <div class="award">
+        <div class="award-title">🏆 Lifetime Achievement in Being Perfect</div>
+        <div class="emoji">🌟🏅</div>
+        <div class="message">From the way you love to the way you care, you’re everything and more. You win. Always.</div>
+      </div>
+
+      <div class="final">
+        And that wraps up the 2025 Ameer Awards. <br />
+        You swept every category, baby. <br />
+        <strong>I love you forever 🤍</strong>
+        <br><br>
+        <button class="surprise-btn" onclick="document.getElementById('popup-overlay').style.display='flex'">One More Thing... 🎁</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById("start-btn");
+    const startScreen = document.getElementById("start-screen");
+    const mainContent = document.getElementById("main-content");
+    const confetti = document.getElementById("confetti");
+
+    startBtn.addEventListener("click", () => {
+      startScreen.style.display = "none";
+      mainContent.style.display = "block";
+      confetti.style.display = "block";
+
+      for (let i = 0; i < 100; i++) {
+        const emoji = document.createElement("div");
+        emoji.className = "floating";
+        emoji.style.left = Math.random() * 100 + "%";
+        emoji.style.top = Math.random() * 100 + "%";
+        emoji.innerText = ["🏎️","✨","❤️","🧸","👄"][Math.floor(Math.random()*5)];
+        emoji.style.animationDuration = (10 + Math.random() * 10) + "s";
+        confetti.appendChild(emoji);
+      }
+
+      setTimeout(() => {
+        confetti.style.display = "none";
+        confetti.innerHTML = "";
+      }, 5000);
+    });
+  </script>
+
+</body>
+</html>
